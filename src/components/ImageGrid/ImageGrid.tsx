@@ -1,11 +1,39 @@
 import styles from './ImageGrid.module.css';
 
-import { Block } from '../../blocks';
+import { Link, useRouteMatch } from 'react-router-dom';
+import { ImageBlock } from '../../types/blocks';
 
 type ImageGridProps = {
-  data?: Block;
+  imageBlocks: ImageBlock[];
 };
 
 export const ImageGrid = (props: ImageGridProps) => {
-  return <div className={styles.imageGrid}>Replace me</div>;
+  const { imageBlocks = [] } = props;
+
+  const routMatch = useRouteMatch<{
+    blockId: string;
+  }>('/:blockId');
+
+  const blockId = routMatch?.params.blockId;
+
+  return (
+    <div className={styles.imageGrid}>
+      {imageBlocks.map((block) => (
+        <Link
+          key={block.id}
+          to={`/${block.id}`}
+          className={styles.imageContainer}
+        >
+          <img
+            src={block.options.url}
+            className={[
+              styles.image,
+              block.id === blockId && styles.imageSelected,
+            ].join(' ')}
+            alt={block.data.description}
+          />
+        </Link>
+      ))}
+    </div>
+  );
 };

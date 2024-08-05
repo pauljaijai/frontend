@@ -1,3 +1,42 @@
 .imageGrid {
-  padding-right: 480px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+  padding-right: 0;
+  width: calc(100vw - 480px);
+  max-width: 100%;
+  padding: 30px;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageSelected {
+  border: 2px blue solid;
+}
+
+@media (min-width: 1230px) {
+  .imageGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .imageGrid {
+    width: 100%;
+  }
 }
