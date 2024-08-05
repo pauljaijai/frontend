@@ -1,31 +1,39 @@
+import { useRouteMatch } from 'react-router-dom';
 import styles from './InfoPanel.module.css';
 
+import { ImageBlock } from '../../types/blocks';
+
 type InfoPanelProps = {
-  id?: string;
-  description?: string;
-  dimensions?: string;
-  createdAt?: string;
+  blocks: ImageBlock[];
 };
 
 export const InfoPanel = (props: InfoPanelProps) => {
-  const { id, description, dimensions, createdAt } = props;
+  const { blocks } = props;
+  const routMatch = useRouteMatch<{
+    blockId: string;
+  }>('/:blockId');
 
-  if (!id) {
-    return <aside className={styles.panel}></aside>;
-  }
+  const blockId = routMatch?.params.blockId;
+
+  const foundBlock = blocks.find((d) => d.id === blockId);
+  if (!foundBlock) return <aside className={styles.panel}></aside>;
+
+  const { description, width, height, createdAt } = foundBlock.data;
 
   return (
     <aside className={styles.panel}>
       <h2 className={styles.heading}>Block info</h2>
       <dl>
         <dt className={styles.title}>ID:</dt>
-        <dd className={styles.details}>{id}</dd>
+        <dd className={styles.details}>{foundBlock.id}</dd>
 
         <dt className={styles.title}>Description:</dt>
         <dd className={styles.details}>{description}</dd>
 
         <dt className={styles.title}>Dimensions:</dt>
-        <dd className={styles.details}>{dimensions}</dd>
+        <dd className={styles.details}>
+          {width} x {height}
+        </dd>
 
         <dt className={styles.title}>Created at:</dt>
         <dd className={styles.details}>{createdAt}</dd>
